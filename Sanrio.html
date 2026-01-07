@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>三麗鷗靈魂伴侶診斷</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root { --primary: #FF758F; --bg: #FFF9FA; --text: #5A5A5A; }
+        body { margin: 0; background: var(--bg); font-family: "PingFang TC", "Microsoft JhengHei", sans-serif; color: var(--text); display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
+        
+        /* 封面圖片樣式 */
+        #landing-page {
+            width: 100%; max-width: 500px; height: 100vh;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 20px; box-sizing: border-box; text-align: center;
+        }
+        .cover-img { 
+            width: 90%; 
+            max-height: 400px; 
+            object-fit: contain; 
+            border-radius: 20px; 
+            margin-bottom: 25px; 
+            box-shadow: 0 10px 30px rgba(255, 117, 143, 0.2); 
+        }
+        .start-title { font-size: 1.8rem; font-weight: 900; color: var(--primary); margin-bottom: 10px; }
+        .start-btn {
+            background: var(--primary); color: white; border: none; padding: 15px 60px;
+            border-radius: 50px; font-size: 1.2rem; font-weight: bold; cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 117, 143, 0.4);
+            transition: 0.3s;
+        }
+        .start-btn:active { transform: scale(0.95); }
+
+        /* 內容區 */
+        #quiz-content { display: none; width: 100%; max-width: 420px; padding: 20px; box-sizing: border-box; animation: fadeIn 0.6s ease; }
+        .result-card { background: white; border-radius: 35px; padding: 25px; border: 2px solid #FFEDF0; box-shadow: 0 15px 40px rgba(255, 117, 143, 0.1); margin-bottom: 20px; }
+        .chart-box { width: 100%; height: 260px; margin: 10px 0; }
+        .analysis-box { background: #FFF0F3; padding: 20px; border-radius: 20px; margin-top: 15px; font-size: 0.95rem; line-height: 1.6; }
+        
+        .selector-box { background: white; border-radius: 30px; padding: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
+        .scroll-row { display: flex; gap: 10px; overflow-x: auto; padding: 10px 0; scrollbar-width: none; }
+        .scroll-row::-webkit-scrollbar { display: none; }
+        .opt-btn { min-width: 80px; padding: 12px; background: #F9F9F9; border-radius: 15px; border: 2px solid transparent; font-size: 0.9rem; text-align: center; flex-shrink: 0; font-weight: bold; cursor: pointer; }
+        .opt-btn.active { border-color: var(--primary); background: #FFF0F3; color: var(--primary); }
+        .go-btn { width: 100%; background: var(--primary); color: white; border: none; padding: 18px; border-radius: 50px; font-size: 1.1rem; font-weight: bold; margin-top: 20px; cursor: pointer; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+<div id="landing-page">
+    <img src="images/images.PNG" class="cover-img" alt="Sanrio Main Image">
+    <div class="start-title">三麗鷗靈魂伴侶診斷</div>
+    <p style="color: #999; margin-bottom: 35px;">這張圖片將開啟你的奇幻旅程</p>
+    <button class="start-btn" onclick="startQuiz()">進入測驗</button>
+</div>
+
+<div id="quiz-content">
+    <div class="result-card" id="res-card" style="display: none;">
+        <h2 id="res-name" style="text-align: center; color: var(--primary); margin: 0;"></h2>
+        <div class="chart-box"><canvas id="radarChart"></canvas></div>
+        <div class="analysis-box" id="res-spark"></div>
+    </div>
+
+    <div class="selector-box">
+        <p><b>✨ 選擇你的星座</b></p>
+        <div class="scroll-row" id="zGroup">
+            <div class="opt-btn" onclick="sel(this,'z','天蠍')">天蠍</div>
+            <div class="opt-btn" onclick="sel(this,'z','牡羊')">牡羊</div>
+            <div class="opt-btn" onclick="sel(this,'z','雙子')">雙子</div>
+            <div class="opt-btn" onclick="sel(this,'z','巨蟹')">巨蟹</div>
+            <div class="opt-btn" onclick="sel(this,'z','摩羯')">摩羯</div>
+        </div>
+        <p><b>🎀 靈魂角色感應</b></p>
+        <div class="scroll-row" id="cGroup">
+            <div class="opt-btn" onclick="sel(this,'c','酷洛米')">酷洛米</div>
+            <div class="opt-btn" onclick="sel(this,'c','布丁狗')">布丁狗</div>
+            <div class="opt-btn" onclick="sel(this,'c','大耳狗')">大耳狗</div>
+            <div class="opt-btn" onclick="sel(this,'c','美樂蒂')">美樂蒂</div>
+        </div>
+        <button class="go-btn" onclick="generate()">開始分析</button>
+    </div>
+</div>
+
+<script>
+    let curZ = ""; let curC = ""; let myChart = null;
+
+    function startQuiz() {
+        document.getElementById('landing-page').style.display = 'none';
+        document.getElementById('quiz-content').style.display = 'block';
+    }
+
+    function sel(el, type, val) {
+        const p = type === 'z' ? 'zGroup' : 'cGroup';
+        document.querySelectorAll(`#${p} .opt-btn`).forEach(b => b.classList.remove('active'));
+        el.classList.add('active');
+        if(type === 'z') curZ = val; else curC = val;
+    }
+
+    function generate() {
+        if(!curZ || !curC) return alert("請先選擇星座與角色！");
+        document.getElementById('res-card').style.display = 'block';
+        document.getElementById('res-name').innerText = `${curZ}座的${curC}`;
+        document.getElementById('res-spark').innerHTML = `<b>✨ 碰撞分析：</b><br>當${curZ}座的冷靜碰上${curC}的熱情，你們的靈魂契合度高達 95%！這是一場完美的邂逅。`;
+        
+        drawChart([85, 70, 90, 65, 80]);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function drawChart(data) {
+        const ctx = document.getElementById('radarChart').getContext('2d');
+        if(myChart) myChart.destroy();
+        myChart = new Chart(ctx, {
+            type: 'radar',
+            data: {
+                labels: ['契合度', '熱情', '反差感', '穩定性', '浪漫度'],
+                datasets: [{
+                    data: data,
+                    backgroundColor: 'rgba(255, 117, 143, 0.3)',
+                    borderColor: '#FF758F',
+                    borderWidth: 2,
+                    pointRadius: 4,
+                    pointBackgroundColor: '#FF758F'
+                }]
+            },
+            options: {
+                scales: { r: { min: 0, max: 100, ticks: { display: false } } },
+                plugins: { legend: { display: false } }
+            }
+        });
+    }
+</script>
+
+</body>
+</html>
