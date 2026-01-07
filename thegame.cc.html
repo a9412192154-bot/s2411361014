@@ -15,7 +15,7 @@
             padding: 20px; box-sizing: border-box; text-align: center;
         }
         .cover-img { 
-            width: 90%; 
+            width: 95%; 
             max-height: 400px; 
             object-fit: contain; 
             border-radius: 20px; 
@@ -29,7 +29,6 @@
             box-shadow: 0 4px 15px rgba(255, 117, 143, 0.4);
             transition: 0.3s;
         }
-        .start-btn:active { transform: scale(0.95); }
 
         #quiz-content { display: none; width: 100%; max-width: 420px; padding: 20px; box-sizing: border-box; animation: fadeIn 0.6s ease; }
         .result-card { background: white; border-radius: 35px; padding: 25px; border: 2px solid #FFEDF0; box-shadow: 0 15px 40px rgba(255, 117, 143, 0.1); margin-bottom: 20px; }
@@ -41,23 +40,22 @@
             display: flex; 
             gap: 10px; 
             overflow-x: auto; 
-            padding: 10px 0; 
+            padding: 10px 5px; 
             scrollbar-width: none; 
             -webkit-overflow-scrolling: touch;
         }
         .scroll-row::-webkit-scrollbar { display: none; }
         .opt-btn { 
-            min-width: 85px; 
-            padding: 12px; 
+            min-width: 90px; 
+            padding: 12px 5px; 
             background: #F9F9F9; 
             border-radius: 15px; 
             border: 2px solid transparent; 
-            font-size: 0.9rem; 
+            font-size: 0.85rem; 
             text-align: center; 
             flex-shrink: 0; 
             font-weight: bold; 
             cursor: pointer; 
-            transition: 0.2s;
         }
         .opt-btn.active { border-color: var(--primary); background: #FFF0F3; color: var(--primary); transform: scale(1.05); }
         .go-btn { width: 100%; background: var(--primary); color: white; border: none; padding: 18px; border-radius: 50px; font-size: 1.1rem; font-weight: bold; margin-top: 20px; cursor: pointer; }
@@ -70,7 +68,7 @@
 <div id="landing-page">
     <img src="images.PNG" class="cover-img" alt="Sanrio Main Image">
     <div class="start-title">三麗鷗靈魂伴侶診斷</div>
-    <p style="color: #999; margin-bottom: 35px;">看看誰才是妳的真命天子？</p>
+    <p style="color: #999; margin-bottom: 35px;">尋找專屬於妳的明星伴侶 ✨</p>
     <button class="start-btn" onclick="startQuiz()">進入測驗</button>
 </div>
 
@@ -98,16 +96,14 @@
             <div class="opt-btn" onclick="sel(this,'z','雙魚')">雙魚</div>
         </div>
         
-        <p><b>🎀 妳最有感的角色</b></p>
+        <p><b>🎀 妳最有感的靈魂角色</b></p>
         <div class="scroll-row" id="cGroup">
-            <div class="opt-btn" onclick="sel(this,'c','酷洛米')">酷洛米</div>
-            <div class="opt-btn" onclick="sel(this,'c','美樂蒂')">美樂蒂</div>
-            <div class="opt-btn" onclick="sel(this,'c','大耳狗')">大耳狗</div>
+            <div class="opt-btn" onclick="sel(this,'c','Hello Kitty')">Hello Kitty</div>
             <div class="opt-btn" onclick="sel(this,'c','布丁狗')">布丁狗</div>
-            <div class="opt-btn" onclick="sel(this,'c','帕恰狗')">帕恰狗</div>
-            <div class="opt-btn" onclick="sel(this,'c','Kitty')">Kitty</div>
-            <div class="opt-btn" onclick="sel(this,'c','蛋黃哥')">蛋黃哥</div>
-            <div class="opt-btn" onclick="sel(this,'c','大眼蛙')">大眼蛙</div>
+            <div class="opt-btn" onclick="sel(this,'c','大耳狗')">大耳狗</div>
+            <div class="opt-btn" onclick="sel(this,'c','美樂蒂')">美樂蒂</div>
+            <div class="opt-btn" onclick="sel(this,'c','酷洛米')">酷洛米</div>
+            <div class="opt-btn" onclick="sel(this,'c','雙星仙子')">雙星仙子</div>
         </div>
         <button class="go-btn" onclick="generate()">開始分析</button>
     </div>
@@ -115,38 +111,27 @@
 
 <script>
     let curZ = ""; let curC = ""; let myChart = null;
-
-    function startQuiz() {
-        document.getElementById('landing-page').style.display = 'none';
-        document.getElementById('quiz-content').style.display = 'block';
-    }
-
+    function startQuiz() { document.getElementById('landing-page').style.display = 'none'; document.getElementById('quiz-content').style.display = 'block'; }
     function sel(el, type, val) {
         const p = type === 'z' ? 'zGroup' : 'cGroup';
         document.querySelectorAll(`#${p} .opt-btn`).forEach(b => b.classList.remove('active'));
         el.classList.add('active');
         if(type === 'z') curZ = val; else curC = val;
     }
-
     function generate() {
         if(!curZ || !curC) return alert("請先選擇星座與角色！");
         document.getElementById('res-card').style.display = 'block';
         document.getElementById('res-name').innerText = `${curZ}座的${curC}`;
         
         const insights = [
-            `這是一個完美的組合！${curZ}座的細膩碰上${curC}的可愛，簡直是靈魂共鳴。`,
-            `妳們的契合度超乎想像！${curC}能完全理解${curZ}座內心的柔軟。`,
-            `充滿驚喜的相遇！雖然性格略有不同，但${curC}會是妳最好的陪伴者。`
+            `這是一個完美的組合！${curZ}座的獨特魅力與${curC}完美融合。`,
+            `契合度爆表！${curC}就像是妳命定的靈魂夥伴。`,
+            `充滿魔法的緣分！${curZ}座與${curC}的相遇是三麗鷗世界最美的意外。`
         ];
-        document.getElementById('res-spark').innerHTML = `<b>✨ 碰撞分析：</b><br>${insights[Math.floor(Math.random()*insights.length)]}`;
-        
-        // 隨機生成分數讓雷達圖每次都不一樣
-        const scores = Array.from({length: 5}, () => Math.floor(Math.random() * 20) + 80);
-        drawChart(scores);
-        
+        document.getElementById('res-spark').innerHTML = `<b>✨ 深度診斷：</b><br>${insights[Math.floor(Math.random()*insights.length)]}`;
+        drawChart(Array.from({length: 5}, () => Math.floor(Math.random() * 20) + 80));
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-
     function drawChart(data) {
         const ctx = document.getElementById('radarChart').getContext('2d');
         if(myChart) myChart.destroy();
@@ -154,22 +139,11 @@
             type: 'radar',
             data: {
                 labels: ['契合度', '熱情', '反差感', '穩定性', '浪漫度'],
-                datasets: [{
-                    data: data,
-                    backgroundColor: 'rgba(255, 117, 143, 0.3)',
-                    borderColor: '#FF758F',
-                    borderWidth: 2,
-                    pointRadius: 4,
-                    pointBackgroundColor: '#FF758F'
-                }]
+                datasets: [{ data: data, backgroundColor: 'rgba(255, 117, 143, 0.3)', borderColor: '#FF758F', borderWidth: 2 }]
             },
-            options: {
-                scales: { r: { min: 0, max: 100, ticks: { display: false } } },
-                plugins: { legend: { display: false } }
-            }
+            options: { scales: { r: { min: 0, max: 100, ticks: { display: false } } }, plugins: { legend: { display: false } } }
         });
     }
 </script>
-
 </body>
 </html>
