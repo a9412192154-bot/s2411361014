@@ -1,1 +1,1 @@
-# sanrio.quiz
+# sanrio.quiz.html
