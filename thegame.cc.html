@@ -59,7 +59,7 @@
     <div class="result-card" id="res-card" style="display: none;">
         <h2 id="res-name" style="text-align: center; color: var(--primary); margin: 0;"></h2>
         <div class="chart-box"><canvas id="radarChart"></canvas></div>
-        <div class="analysis-box" id="res-spark"></div>
+        <div id="res-spark" class="analysis-box"></div>
     </div>
 
     <div class="selector-box">
@@ -101,9 +101,9 @@
         if(!curZ || !curC) return alert("請先選擇星座與角色！");
         document.getElementById('res-card').style.display = 'block';
         document.getElementById('res-name').innerText = `${curZ}座的${curC}`;
-        document.getElementById('res-spark').innerHTML = `<b>✨ 碰撞分析：</b><br>當${curZ}座的冷靜碰上${curC}的熱情，你們的靈魂契合度高達 95%！這是一場完美的邂逅。`;
+        document.getElementById('res-spark').innerHTML = `<b>✨ 靈魂感應結果：</b><br>在三麗鷗的世界裡，你展現了${curC}獨特的氣質，與${curZ}座的性格完美融合！`;
         
-        drawChart([85, 70, 90, 65, 80]);
+        drawChart([Math.floor(Math.random()*20+80), Math.floor(Math.random()*30+70), 90, 85, 95]);
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
