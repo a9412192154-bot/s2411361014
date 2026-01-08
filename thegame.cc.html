@@ -3,101 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>𝜗ৎ三麗鷗靈魂伴侶診斷𝜗ৎ</title>
+    <title>三麗鷗靈魂伴侶診斷</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root { --primary: #FF758F; --bg: #FFF9FA; --text: #5A5A5A; }
         body { margin: 0; background: var(--bg); font-family: "PingFang TC", "Microsoft JhengHei", sans-serif; color: var(--text); display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
-        
-        #landing-page {
-            width: 100%; max-width: 500px; height: 100vh;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            padding: 20px; box-sizing: border-box; text-align: center;
-        }
-        .cover-img { 
-            width: 95%; 
-            max-height: 400px; 
-            object-fit: contain; 
-            border-radius: 20px; 
-            margin-bottom: 25px; 
-            box-shadow: 0 10px 30px rgba(255, 117, 143, 0.2); 
-        }
-        .start-title { font-size: 1.8rem; font-weight: 900; color: var(--primary); margin-bottom: 10px; }
-        .start-btn {
-            background: var(--primary); color: white; border: none; padding: 15px 60px;
-            border-radius: 50px; font-size: 1.2rem; font-weight: bold; cursor: pointer;
-            box-shadow: 0 4px 15px rgba(255, 117, 143, 0.4);
-            transition: 0.3s;
-        }
-
-        #quiz-content { display: none; width: 100%; max-width: 420px; padding: 20px; box-sizing: border-box; animation: fadeIn 0.6s ease; }
+        #landing-page { width: 100%; max-width: 500px; height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box; text-align: center; }
+        .cover-img { width: 95%; max-height: 400px; object-fit: contain; border-radius: 20px; margin-bottom: 25px; box-shadow: 0 10px 30px rgba(255, 117, 143, 0.2); }
+        .start-btn { background: var(--primary); color: white; border: none; padding: 15px 60px; border-radius: 50px; font-size: 1.2rem; font-weight: bold; cursor: pointer; box-shadow: 0 4px 15px rgba(255, 117, 143, 0.4); }
+        #quiz-content { display: none; width: 100%; max-width: 420px; padding: 20px; box-sizing: border-box; }
         .result-card { background: white; border-radius: 35px; padding: 25px; border: 2px solid #FFEDF0; box-shadow: 0 15px 40px rgba(255, 117, 143, 0.1); margin-bottom: 20px; }
         .chart-box { width: 100%; height: 260px; margin: 10px 0; }
         .analysis-box { background: #FFF0F3; padding: 20px; border-radius: 20px; margin-top: 15px; font-size: 0.95rem; line-height: 1.6; }
-        
         .selector-box { background: white; border-radius: 30px; padding: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
-        .scroll-row { 
-            display: flex; 
-            gap: 10px; 
-            overflow-x: auto; 
-            padding: 10px 5px; 
-            scrollbar-width: none; 
-            -webkit-overflow-scrolling: touch;
-        }
-        .scroll-row::-webkit-scrollbar { display: none; }
-        .opt-btn { 
-            min-width: 95px; 
-            padding: 12px 5px; 
-            background: #F9F9F9; 
-            border-radius: 15px; 
-            border: 2px solid transparent; 
-            font-size: 0.85rem; 
-            text-align: center; 
-            flex-shrink: 0; 
-            font-weight: bold; 
-            cursor: pointer; 
-            transition: 0.2s;
-        }
+        .scroll-row { display: flex; gap: 10px; overflow-x: auto; padding: 10px 5px; scrollbar-width: none; }
+        .opt-btn { min-width: 95px; padding: 12px 5px; background: #F9F9F9; border-radius: 15px; border: 2px solid transparent; font-size: 0.85rem; text-align: center; flex-shrink: 0; font-weight: bold; cursor: pointer; }
         .opt-btn.active { border-color: var(--primary); background: #FFF0F3; color: var(--primary); transform: scale(1.05); }
         .go-btn { width: 100%; background: var(--primary); color: white; border: none; padding: 18px; border-radius: 50px; font-size: 1.1rem; font-weight: bold; margin-top: 20px; cursor: pointer; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
 <div id="landing-page">
     <img src="images.PNG" class="cover-img" alt="Sanrio Main Image">
-    <div class="start-title">三麗鷗靈魂伴侶診斷🍰</div>
-    <p style="color: #999; margin-bottom: 35px;">點擊開始，尋找妳的專屬大明星𐔌՞ ܸ.ˬ.ܸ՞𐦯✨</p>
+    <div style="font-size: 1.8rem; font-weight: 900; color: var(--primary);">三麗鷗靈魂伴侶診斷</div>
+    <p style="color: #999; margin-bottom: 30px;">72 種靈魂組合，找出妳的專屬羈絆 ✨</p>
     <button class="start-btn" onclick="startQuiz()">進入測驗</button>
 </div>
 
 <div id="quiz-content">
     <div class="result-card" id="res-card" style="display: none;">
-        <h2 id="res-name" style="text-align: center; color: var(--primary); margin: 0;"></h2>
+        <h2 id="res-name" style="text-align: center; color: var(--primary);"></h2>
         <div class="chart-box"><canvas id="radarChart"></canvas></div>
         <div id="res-spark" class="analysis-box"></div>
     </div>
 
     <div class="selector-box">
-        <p><b>✨ 選擇妳的星座 (左右滑動)⭑.ᐟ</p>
+        <p><b>✨ 選擇妳的星座</b></p>
         <div class="scroll-row" id="zGroup">
-            <div class="opt-btn" onclick="sel(this,'z','♈️ 牡羊')">♈️ 牡羊</div>
-            <div class="opt-btn" onclick="sel(this,'z','♉️ 金牛')">♉️ 金牛</div>
-            <div class="opt-btn" onclick="sel(this,'z','♊️ 雙子')">♊️ 雙子</div>
-            <div class="opt-btn" onclick="sel(this,'z','♋️ 巨蟹')">♋️ 巨蟹</div>
-            <div class="opt-btn" onclick="sel(this,'z','♌️ 獅子')">♌️ 獅子</div>
-            <div class="opt-btn" onclick="sel(this,'z','♍️ 處女')">♍️ 處女</div>
-            <div class="opt-btn" onclick="sel(this,'z','♎️ 天秤')">♎️ 天秤</div>
-            <div class="opt-btn" onclick="sel(this,'z','♏️ 天蠍')">♏️ 天蠍</div>
-            <div class="opt-btn" onclick="sel(this,'z','♐️ 射手')">♐️ 射手</div>
-            <div class="opt-btn" onclick="sel(this,'z','♑️ 摩羯')">♑️ 摩羯</div>
-            <div class="opt-btn" onclick="sel(this,'z','♒️ 水瓶')">♒️ 水瓶</div>
-            <div class="opt-btn" onclick="sel(this,'z','♓️ 雙魚')">♓️ 雙魚</div>
+            <div class="opt-btn" onclick="sel(this,'z','♈️ 牡羊','fire')">♈️ 牡羊</div>
+            <div class="opt-btn" onclick="sel(this,'z','♉️ 金牛','earth')">♉️ 金牛</div>
+            <div class="opt-btn" onclick="sel(this,'z','♊️ 雙子','air')">♊️ 雙子</div>
+            <div class="opt-btn" onclick="sel(this,'z','♋️ 巨蟹','water')">♋️ 巨蟹</div>
+            <div class="opt-btn" onclick="sel(this,'z','♌️ 獅子','fire')">♌️ 獅子</div>
+            <div class="opt-btn" onclick="sel(this,'z','♍️ 處女','earth')">♍️ 處女</div>
+            <div class="opt-btn" onclick="sel(this,'z','♎️ 天秤','air')">♎️ 天秤</div>
+            <div class="opt-btn" onclick="sel(this,'z','♏️ 天蠍','water')">♏️ 天蠍</div>
+            <div class="opt-btn" onclick="sel(this,'z','♐️ 射手','fire')">♐️ 射手</div>
+            <div class="opt-btn" onclick="sel(this,'z','♑️ 摩羯','earth')">♑️ 摩羯</div>
+            <div class="opt-btn" onclick="sel(this,'z','♒️ 水瓶','air')">♒️ 水瓶</div>
+            <div class="opt-btn" onclick="sel(this,'z','♓️ 雙魚','water')">♓️ 雙魚</div>
         </div>
-        
-        <p><b>🎀 選擇最喜歡的角色⋆˚꩜｡</b></p>
+        <p><b>🎀 選擇靈魂角色</b></p>
         <div class="scroll-row" id="cGroup">
             <div class="opt-btn" onclick="sel(this,'c','Hello Kitty')">Hello Kitty</div>
             <div class="opt-btn" onclick="sel(this,'c','布丁狗')">布丁狗</div>
@@ -111,27 +68,33 @@
 </div>
 
 <script>
-    let curZ = ""; let curC = ""; let myChart = null;
+    let curZ = ""; let curC = ""; let curType = ""; let myChart = null;
+    const charData = {
+        'Hello Kitty': { trait: '優雅且全能', data: [95, 80, 70, 95, 85] },
+        '布丁狗': { trait: '悠閒療癒系', data: [70, 60, 95, 90, 75] },
+        '大耳狗': { trait: '純真且溫柔', data: [85, 90, 60, 80, 95] },
+        '美樂蒂': { trait: '天真爛漫', data: [90, 75, 80, 70, 90] },
+        '酷洛米': { trait: '反差萌帥氣', data: [80, 95, 95, 60, 85] },
+        '雙星仙子': { trait: '夢幻與靈性', data: [75, 70, 85, 85, 95] }
+    };
+    const zType = {
+        'fire': '充滿熱情的能量', 'earth': '踏實穩定的力量', 'air': '靈活變化的思維', 'water': '細膩溫柔的情感'
+    };
+
     function startQuiz() { document.getElementById('landing-page').style.display = 'none'; document.getElementById('quiz-content').style.display = 'block'; }
-    function sel(el, type, val) {
+    function sel(el, type, val, group) {
         const p = type === 'z' ? 'zGroup' : 'cGroup';
         document.querySelectorAll(`#${p} .opt-btn`).forEach(b => b.classList.remove('active'));
         el.classList.add('active');
-        if(type === 'z') curZ = val; else curC = val;
+        if(type === 'z') { curZ = val; curType = group; } else { curC = val; }
     }
     function generate() {
-        if(!curZ || !curC) return alert("꒰ঌ請先選擇星座與角色歐！໒꒱");
+        if(!curZ || !curC) return alert("請完整選擇喔！");
+        const c = charData[curC];
         document.getElementById('res-card').style.display = 'block';
-        document.getElementById('res-name').innerText = `${curZ}座的${curC}`;
-        
-        const insights = [
-            `𐙚⋆°🦢簡直是天作之合！${curZ}的妳與${curC}有著無可取代的默契>ᴗ<`,
-            `太閃啦！${curC}最受不了${curZ}座這種獨特的吸引力了.𖥔 ݁ ˖`,
-            `命中註定！在三麗鷗的世界裡，${curC}會一直守護著${curZ}座的妳݁₍ᐢ.  ̫.ᐢ₎⋆`
-        ];
-        document.getElementById('res-spark').innerHTML = `<b>✨ 靈魂診斷結果ᶻ𝗓𐰁：</b><br>${insights[Math.floor(Math.random()*insights.length)]}`;
-        
-        drawChart(Array.from({length: 5}, () => Math.floor(Math.random() * 20) + 80));
+        document.getElementById('res-name').innerText = `${curZ} × ${curC}`;
+        document.getElementById('res-spark').innerHTML = `<b>✨ 深度診斷：</b><br>${curZ}自帶的「${zType[curType]}」，遇上了${curC}那「${c.trait}」的靈魂，產生了化學反應。妳們的組合在三麗鷗世界中屬於極罕見的契合，能互相補足彼此的空缺！`;
+        drawChart(c.data);
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
     function drawChart(data) {
